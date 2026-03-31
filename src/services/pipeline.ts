@@ -1,6 +1,6 @@
 import { collectReddit, collectHackerNews, collectNewsRSS } from '@mia/core-collectors'
 import {
-  Source,
+  CoreSource,
   type CollectedItem,
   type ExtractionResult,
   type ResearchDepth,
@@ -14,7 +14,7 @@ import { mapWithConcurrency } from './concurrency.js'
 
 const DEFAULT_RSS_FEEDS = ['https://techcrunch.com/feed/']
 
-const DEFAULT_SOURCES: Source[] = [Source.reddit, Source.hackernews, Source.news]
+const DEFAULT_SOURCES: string[] = [CoreSource.reddit, CoreSource.hackernews, CoreSource.news]
 const DEFAULT_EXTRACTION_CONCURRENCY = 5
 const DEFAULT_OPENVIKING_INGEST_CONCURRENCY = 10
 
@@ -25,20 +25,20 @@ function readPositiveInt(value: string | undefined, fallback: number): number {
   return int > 0 ? int : fallback
 }
 
-async function collectFromSource(source: Source, query: string, depth: ResearchDepth): Promise<CollectedItem[]> {
+async function collectFromSource(source: string, query: string, depth: ResearchDepth): Promise<CollectedItem[]> {
   switch (source) {
-    case Source.reddit:
+    case CoreSource.reddit:
       return collectReddit({ subreddits: ['SaaS', 'startups', 'smallbusiness'], query, limit: depth === 'deep' ? 50 : 25 })
-    case Source.hackernews:
+    case CoreSource.hackernews:
       return collectHackerNews({ query, limit: depth === 'deep' ? 40 : 20, tags: 'story' })
-    case Source.news:
+    case CoreSource.news:
       return collectNewsRSS({ feeds: DEFAULT_RSS_FEEDS, query })
     default:
       return []
   }
 }
 
-async function collectAllItems(sources: Source[], query: string, depth: ResearchDepth): Promise<CollectedItem[]> {
+async function collectAllItems(sources: string[], query: string, depth: ResearchDepth): Promise<CollectedItem[]> {
   const settled = await Promise.allSettled(sources.map((s) => collectFromSource(s, query, depth)))
   return settled.flatMap((r) => (r.status === 'fulfilled' ? r.value : []))
 }
