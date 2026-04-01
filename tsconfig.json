@@ -7,7 +7,8 @@
   },
   "references": [
     { "path": "../shared-core" },
-    { "path": "../core-collectors" }
+    { "path": "../core-collectors" },
+    { "path": "../core-services" }
   ],
   "include": ["src/**/*"]
 }
