@@ -1,1 +1,1 @@
-export { callLLM, type LLMMessage, type LLMOptions } from '@mia/core-services'
+export { callLLM, type LLMMessage, type LLMOptions } from '@mira/core-services'

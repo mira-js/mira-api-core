@@ -8,5 +8,5 @@ const port = Number(process.env.PORT) || 3000
 startWorker()
 
 serve({ fetch: app.fetch, port }, () =>
-  console.log(`MIA running on http://localhost:${port}`),
+  console.log(`MIRA running on http://localhost:${port}`),
 )

@@ -1,9 +1,9 @@
-# @mia/api-core
+# @mira/api-core
 
-[![npm](https://img.shields.io/npm/v/@mia/api-core)](https://www.npmjs.com/package/@mia/api-core)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/mira-js/mia-core/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/@mira/api-core)](https://www.npmjs.com/package/@mira/api-core)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/mira-js/mira-core/blob/main/LICENSE)
 
-The MIA research API. A Hono HTTP server backed by a BullMQ async worker that runs the full collection → extraction → clustering → synthesis pipeline. Self-host it; query it from anywhere.
+The MIRA research API. A Hono HTTP server backed by a BullMQ async worker that runs the full collection → extraction → clustering → synthesis pipeline. Self-host it; query it from anywhere.
 
 ---
 
@@ -41,11 +41,11 @@ GET /api/v1/research/:jobId  → ResearchResult
 
 ## Quickstart
 
-The fastest way to run this is via Docker Compose from the [mia-core root](https://github.com/mira-js/mia-core):
+The fastest way to run this is via Docker Compose from the [mira-core root](https://github.com/mira-js/mira-core):
 
 ```bash
-git clone https://github.com/mira-js/mia-core.git
-cd mia-core
+git clone https://github.com/mira-js/mira-core.git
+cd mira-core
 cp .env.example .env   # set OPENAI_API_KEY at minimum
 docker compose up
 ```
@@ -53,10 +53,10 @@ docker compose up
 For local development without Docker:
 
 ```bash
-# From mia-core root
+# From mira-core root
 pnpm install && pnpm build
-pnpm --filter @mia/api-core migrate
-pnpm --filter @mia/api-core start
+pnpm --filter @mira/api-core migrate
+pnpm --filter @mira/api-core start
 ```
 
 ---
@@ -77,10 +77,10 @@ pnpm --filter @mia/api-core start
 | `REDDIT_USERNAME` | No | — | Reddit OAuth |
 | `REDDIT_PASSWORD` | No | — | Reddit OAuth |
 | `JINA_API_KEY` | No | — | Enables full-text article extraction |
-| `MIA_ENABLE_FULLTEXT` | No | `false` | Set `true` to fetch article bodies via Jina |
-| `MIA_EXTRACTION_CONCURRENCY` | No | `5` | Parallel LLM calls during extraction phase |
-| `MIA_OPENVIKING_INGEST_CONCURRENCY` | No | `10` | Parallel writes to OpenViking |
-| `MIA_PROMPTS_DIR` | No | `./prompts` | Directory for custom prompt overrides |
+| `MIRA_ENABLE_FULLTEXT` | No | `false` | Set `true` to fetch article bodies via Jina |
+| `MIRA_EXTRACTION_CONCURRENCY` | No | `5` | Parallel LLM calls during extraction phase |
+| `MIRA_OPENVIKING_INGEST_CONCURRENCY` | No | `10` | Parallel writes to OpenViking |
+| `MIRA_PROMPTS_DIR` | No | `./prompts` | Directory for custom prompt overrides |
 | `OPENVIKING_URL` | No | — | OpenViking base URL (semantic search, optional) |
 | `OPENVIKING_API_KEY` | No | — | OpenViking API key (optional) |
 
@@ -181,10 +181,10 @@ Three prompt templates drive the LLM pipeline:
 | `prompts/extract_pain_points.txt` | Structured per-item extraction |
 | `prompts/synthesize_report.txt` | Final cross-item synthesis |
 
-Override any or all by setting `MIA_PROMPTS_DIR` to your own directory. Missing files fall back to the bundled defaults — only ship the files you want to change.
+Override any or all by setting `MIRA_PROMPTS_DIR` to your own directory. Missing files fall back to the bundled defaults — only ship the files you want to change.
 
 ```bash
-MIA_PROMPTS_DIR=/path/to/my-prompts
+MIRA_PROMPTS_DIR=/path/to/my-prompts
 ```
 
 ---
@@ -207,11 +207,5 @@ The pipeline uses the OpenAI SDK with a configurable base URL, so it works with 
 A single PostgreSQL table (`research_jobs`) stores job metadata. Run the migration before first start:
 
 ```bash
-pnpm --filter @mia/api-core migrate
+pnpm --filter @mira/api-core migrate
 ```
-
----
-
-## Part of mia-core
-
-This package is part of the [mia-core](https://github.com/mira-js/mia-core) monorepo — a self-hostable market intelligence engine.

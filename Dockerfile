@@ -12,15 +12,15 @@ RUN pnpm install --frozen-lockfile
 
 # Build shared-core and core-collectors first
 COPY packages/shared-core/ packages/shared-core/
-RUN pnpm --filter @mia/shared-core build
+RUN pnpm --filter @mira/shared-core build
 
 COPY packages/core-collectors/ packages/core-collectors/
-RUN pnpm --filter @mia/core-collectors build
+RUN pnpm --filter @mira/core-collectors build
 
 # Build api-core
 COPY packages/api-core/ packages/api-core/
 COPY prompts/ prompts/
-RUN pnpm --filter @mia/api-core build
+RUN pnpm --filter @mira/api-core build
 
 ENV NODE_ENV=production
 EXPOSE 3000

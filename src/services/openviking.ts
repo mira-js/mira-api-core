@@ -1,1 +1,1 @@
-export { openVikingClient } from '@mia/core-services'
+export { openVikingClient } from '@mira/core-services'

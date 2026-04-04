@@ -1,5 +1,5 @@
 {
-  "name": "@mia/api-core",
+  "name": "@mira/api-core",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "@mia/core-collectors": "workspace:*",
-    "@mia/core-services": "workspace:*",
-    "@mia/shared-core": "workspace:*",
+    "@mira/core-collectors": "workspace:*",
+    "@mira/core-services": "workspace:*",
+    "@mira/shared-core": "workspace:*",
     "bullmq": "^5.34.5",
     "dotenv": "^16.4.7",
     "hono": "^4.6.14",

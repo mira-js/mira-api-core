@@ -4,14 +4,14 @@ import {
   type CollectedItem,
   type ExtractionResult,
   type PainPointTheme,
-} from '@mia/shared-core'
+} from '@mira/shared-core'
 
 vi.mock('ioredis', () => ({
   default: vi.fn().mockImplementation(() => ({ on: vi.fn(), quit: vi.fn() })),
   Redis: vi.fn().mockImplementation(() => ({ on: vi.fn(), quit: vi.fn() })),
 }))
 
-vi.mock('@mia/core-collectors', () => ({
+vi.mock('@mira/core-collectors', () => ({
   collectReddit: vi.fn(),
   collectHackerNews: vi.fn(),
   collectNewsRSS: vi.fn(),
@@ -29,7 +29,7 @@ vi.mock('../src/services/analysis.js', () => ({
   synthesizeReport: vi.fn(),
 }))
 
-import { collectReddit, collectHackerNews, collectNewsRSS } from '@mia/core-collectors'
+import { collectReddit, collectHackerNews, collectNewsRSS } from '@mira/core-collectors'
 import { openVikingClient } from '../src/services/openviking.js'
 import { extractItem, aggregateThemes, synthesizeReport } from '../src/services/analysis.js'
 import { runPipeline } from '../src/services/pipeline.js'
@@ -185,11 +185,11 @@ describe('runPipeline', () => {
   describe('Jina full-text enrichment', () => {
     afterEach(() => {
       vi.unstubAllGlobals()
-      delete process.env.MIA_ENABLE_FULLTEXT
+      delete process.env.MIRA_ENABLE_FULLTEXT
     })
 
-    it('depth: deep with MIA_ENABLE_FULLTEXT=true calls fetch with Jina URL', async () => {
-      process.env.MIA_ENABLE_FULLTEXT = 'true'
+    it('depth: deep with MIRA_ENABLE_FULLTEXT=true calls fetch with Jina URL', async () => {
+      process.env.MIRA_ENABLE_FULLTEXT = 'true'
       const mockFetch = vi.fn().mockResolvedValue({ ok: true, text: async () => 'enriched content' })
       vi.stubGlobal('fetch', mockFetch)
 
@@ -205,8 +205,8 @@ describe('runPipeline', () => {
       )
     })
 
-    it('depth: quick with MIA_ENABLE_FULLTEXT=true does NOT call fetch', async () => {
-      process.env.MIA_ENABLE_FULLTEXT = 'true'
+    it('depth: quick with MIRA_ENABLE_FULLTEXT=true does NOT call fetch', async () => {
+      process.env.MIRA_ENABLE_FULLTEXT = 'true'
       const mockFetch = vi.fn()
       vi.stubGlobal('fetch', mockFetch)
 
@@ -218,7 +218,7 @@ describe('runPipeline', () => {
     })
 
     it('item with empty url is skipped — fetch is not called for it', async () => {
-      process.env.MIA_ENABLE_FULLTEXT = 'true'
+      process.env.MIRA_ENABLE_FULLTEXT = 'true'
       const mockFetch = vi.fn().mockResolvedValue({ ok: true, text: async () => 'enriched' })
       vi.stubGlobal('fetch', mockFetch)
 
@@ -231,7 +231,7 @@ describe('runPipeline', () => {
     })
 
     it('Jina fetch throws for one item — item retains original body, pipeline completes', async () => {
-      process.env.MIA_ENABLE_FULLTEXT = 'true'
+      process.env.MIRA_ENABLE_FULLTEXT = 'true'
       const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'))
       vi.stubGlobal('fetch', mockFetch)
 
@@ -287,11 +287,11 @@ describe('runPipeline', () => {
 
   describe('extractionConcurrency cap for quick depth', () => {
     afterEach(() => {
-      delete process.env.MIA_EXTRACTION_CONCURRENCY
+      delete process.env.MIRA_EXTRACTION_CONCURRENCY
     })
 
     it('caps concurrency at 2 for quick depth when env var is higher', async () => {
-      process.env.MIA_EXTRACTION_CONCURRENCY = '10'
+      process.env.MIRA_EXTRACTION_CONCURRENCY = '10'
       const items: CollectedItem[] = Array.from({ length: 6 }, (_, i) => ({
         ...mockItem,
         url: `https://example.com/${i}`,
@@ -309,7 +309,7 @@ describe('runPipeline', () => {
     })
 
     it('does not cap concurrency for deep depth — uses full env var value', async () => {
-      process.env.MIA_EXTRACTION_CONCURRENCY = '10'
+      process.env.MIRA_EXTRACTION_CONCURRENCY = '10'
       const items: CollectedItem[] = Array.from({ length: 4 }, (_, i) => ({
         ...mockItem,
         url: `https://example.com/${i}`,
@@ -327,7 +327,7 @@ describe('runPipeline', () => {
     })
 
     it('quick depth with env var already at or below 2 uses env var value', async () => {
-      process.env.MIA_EXTRACTION_CONCURRENCY = '1'
+      process.env.MIRA_EXTRACTION_CONCURRENCY = '1'
       const items: CollectedItem[] = Array.from({ length: 3 }, (_, i) => ({
         ...mockItem,
         url: `https://example.com/${i}`,

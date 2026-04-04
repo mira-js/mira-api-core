@@ -1,4 +1,4 @@
-import { collectReddit, collectHackerNews, collectNewsRSS } from '@mia/core-collectors'
+import { collectReddit, collectHackerNews, collectNewsRSS } from '@mira/core-collectors'
 import {
   CoreSource,
   type CollectedItem,
@@ -7,7 +7,7 @@ import {
   type ResearchJobInput,
   type ResearchResult,
   type Result,
-} from '@mia/shared-core'
+} from '@mira/shared-core'
 import { openVikingClient } from './openviking.js'
 import { extractItem, aggregateThemes, synthesizeReport } from './analysis.js'
 import { mapWithConcurrency } from './concurrency.js'
@@ -44,7 +44,7 @@ async function collectAllItems(sources: string[], query: string, depth: Research
 }
 
 async function enrichItemsWithFullText(items: readonly CollectedItem[]): Promise<CollectedItem[]> {
-  const concurrency = readPositiveInt(process.env.MIA_FULLTEXT_CONCURRENCY, 10)
+  const concurrency = readPositiveInt(process.env.MIRA_FULLTEXT_CONCURRENCY, 10)
   return mapWithConcurrency(items, concurrency, async (item) => {
     if (!item.url) return item
     try {
@@ -93,13 +93,13 @@ export async function runPipeline(input: ResearchJobInput): Promise<Result<Resea
   try {
     const sources = input.sources ?? DEFAULT_SOURCES
     const depth = input.depth ?? 'quick'
-    const openVikingIngestConcurrency = readPositiveInt(process.env.MIA_OPENVIKING_INGEST_CONCURRENCY, DEFAULT_OPENVIKING_INGEST_CONCURRENCY)
-    const baseExtractionConcurrency = readPositiveInt(process.env.MIA_EXTRACTION_CONCURRENCY, DEFAULT_EXTRACTION_CONCURRENCY)
+    const openVikingIngestConcurrency = readPositiveInt(process.env.MIRA_OPENVIKING_INGEST_CONCURRENCY, DEFAULT_OPENVIKING_INGEST_CONCURRENCY)
+    const baseExtractionConcurrency = readPositiveInt(process.env.MIRA_EXTRACTION_CONCURRENCY, DEFAULT_EXTRACTION_CONCURRENCY)
     const extractionConcurrency = depth === 'quick' ? Math.min(baseExtractionConcurrency, 2) : baseExtractionConcurrency
 
     const allItems = await collectAllItems(sources, input.query, depth)
 
-    const enableFullText = process.env.MIA_ENABLE_FULLTEXT === 'true'
+    const enableFullText = process.env.MIRA_ENABLE_FULLTEXT === 'true'
     const enrichedItems = depth === 'deep' && enableFullText
       ? await enrichItemsWithFullText(allItems)
       : allItems

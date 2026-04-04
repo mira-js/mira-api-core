@@ -1,1 +1,1 @@
-export { mapWithConcurrency } from '@mia/core-services'
+export { mapWithConcurrency } from '@mira/core-services'

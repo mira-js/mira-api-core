@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
-import { SourceSchema, type ResearchJobInput } from '@mia/shared-core'
+import { SourceSchema, type ResearchJobInput } from '@mira/shared-core'
 import { orchestrator } from '../services/orchestrator.js'
 import type { AppEnv } from '../types.js'
 

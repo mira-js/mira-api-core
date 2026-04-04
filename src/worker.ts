@@ -1,5 +1,5 @@
 import { Worker } from 'bullmq'
-import type { ResearchJobInput, ResearchResult } from '@mia/shared-core'
+import type { ResearchJobInput, ResearchResult } from '@mira/shared-core'
 import { runPipeline } from './services/pipeline.js'
 import { redisConnection } from './services/redis.js'
 

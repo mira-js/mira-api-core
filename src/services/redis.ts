@@ -1,1 +1,1 @@
-export { redisConnection } from '@mia/core-services'
+export { redisConnection } from '@mira/core-services'

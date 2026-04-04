@@ -1,1 +1,1 @@
-export { extractItem, aggregateThemes, synthesizeReport } from '@mia/core-services'
+export { extractItem, aggregateThemes, synthesizeReport } from '@mira/core-services'

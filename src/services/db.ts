@@ -1,1 +1,1 @@
-export { query, closePool } from '@mia/core-services'
+export { query, closePool } from '@mira/core-services'

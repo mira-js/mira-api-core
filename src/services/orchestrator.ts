@@ -1,1 +1,1 @@
-export { orchestrator, toJobStatus } from '@mia/core-services'
+export { orchestrator, toJobStatus } from '@mira/core-services'

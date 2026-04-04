@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { CoreSource } from '@mia/shared-core'
+import { CoreSource } from '@mira/shared-core'
 
 vi.mock('../src/services/orchestrator.js', () => ({
   orchestrator: {
